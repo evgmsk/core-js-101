@@ -231,9 +231,7 @@ function getRectangleString(width, height) {
     } else {
       res += leftBottom + bottom.repeat(width - 2) + rightBottom + '\n';
     }
-    console.log(res);
   }
-  console.log(res);
   return res;
   // throw new Error('Not implemented');
 }

@@ -16,5 +16,7 @@ module.exports = {
     ecmaVersion: 2018,
   },
   rules: {
+    'no-plusplus': 0,
+    'prefer-template': 0,
   },
 };
