@@ -19,6 +19,7 @@ module.exports = {
     'no-plusplus': 0,
     'prefer-template': 0,
     'no-param-reassign': 0,
-    'arrow-body-style': 0
+    'arrow-body-style': 0,
+    'no-else-return': 0,
   },
 };

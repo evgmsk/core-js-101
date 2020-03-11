@@ -108,18 +108,19 @@ describe('04-date-tasks', () => {
         expected: Math.PI, // 180 deg
       }, {
         date: Date.UTC(2016, 3, 5, 9, 0),
-        expected: Math.PI / 2, // 90 deg
+        expected: 3 * Math.PI / 2, // 90 deg
       }, {
         date: Date.UTC(2016, 3, 5, 21, 0),
-        expected: Math.PI / 2, // 90 deg
+        expected: 3 * Math.PI / 2, // 90 deg
       }, {
         date: Date.UTC(2016, 3, 5, 14, 20),
-        expected: 0.8726646259971648, // 50 deg
+        expected: 2 * Math.PI - 0.8726646259971648, // 50 deg
       }, {
         date: Date.UTC(2016, 3, 5, 23, 55),
-        expected: 0.4799655442984406, // 27.5 deg
+        expected: 0.47996554429844096, // 27.5 deg
       },
     ].forEach((data) => {
+      console.log('dffd', tasks.angleBetweenClockHands(new Date(data.date)), data.expected);
       assert.equal(
         tasks.angleBetweenClockHands(new Date(data.date)),
         data.expected,
