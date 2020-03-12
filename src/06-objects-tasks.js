@@ -20,9 +20,15 @@
  *    console.log(r.height);      // => 20
  *    console.log(r.getArea());   // => 200
  */
-function Rectangle(/* width, height */) {
-  throw new Error('Not implemented');
+function Rectangle(width, height) {
+  this.width = width;
+  this.height = height;
+  // throw new Error('Not implemented');
 }
+
+Rectangle.prototype.getArea = function getArea() {
+  return this.width * this.height;
+};
 
 
 /**
@@ -35,8 +41,9 @@ function Rectangle(/* width, height */) {
  *    [1,2,3]   =>  '[1,2,3]'
  *    { width: 10, height : 20 } => '{"height":10,"width":20}'
  */
-function getJSON(/* obj */) {
-  throw new Error('Not implemented');
+function getJSON(obj) {
+  return JSON.stringify(obj);
+  // throw new Error('Not implemented');
 }
 
 
@@ -51,8 +58,10 @@ function getJSON(/* obj */) {
  *    const r = fromJSON(Circle.prototype, '{"radius":10}');
  *
  */
-function fromJSON(/* proto, json */) {
-  throw new Error('Not implemented');
+function fromJSON(proto, json) {
+  const Obj = proto.constructor;
+  return Object.assign(new Obj(), JSON.parse(json));
+  // throw new Error('Not implemented');
 }
 
 
@@ -111,32 +120,143 @@ function fromJSON(/* proto, json */) {
  */
 
 const cssSelectorBuilder = {
-  element(/* value */) {
-    throw new Error('Not implemented');
+  result: '',
+  occurences: {},
+  checkOrder(sel) {
+    switch (sel) {
+      case ('elem'):
+        if (Object.keys(this.occurences).length) {
+          throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+        }
+        break;
+      case ('id'):
+        if (Object.keys(this.occurences).length > 0 && !('elem' in this.occurences)) {
+          throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+        }
+        break;
+      case ('class'):
+        if (('attr' in this.occurences) || ('ps-elem' in this.occurences) || ('ps-class' in this.occurences)) {
+          throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+        }
+        break;
+      case ('attr'):
+        if (('ps-elem' in this.occurences) || ('ps-class' in this.occurences)) {
+          throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+        }
+        break;
+      case ('ps-class'):
+        if (('ps-elem' in this.occurences)) {
+          throw new Error('Selector parts should be arranged in the following order: element, id, class, attribute, pseudo-class, pseudo-element');
+        }
+        break;
+      default:
+        break;
+    }
   },
 
-  id(/* value */) {
-    throw new Error('Not implemented');
+  checkOccurence(sel) {
+    if ((sel === 'id' || sel === 'ps-elem' || sel === 'elem') && sel in this.occurences) {
+      throw new Error('Element, id and pseudo-element should not occur more then one time inside the selector');
+    }
+    this.checkOrder(sel);
+    this.occurences[sel] = 1;
   },
 
-  class(/* value */) {
-    throw new Error('Not implemented');
+  createNewSelector() {
+    const self = { ...this };
+    self.result = '';
+    self.newSelector = true;
+    self.occurences = {};
+    return self;
   },
 
-  attr(/* value */) {
-    throw new Error('Not implemented');
+  addToResult(sel) {
+    this.result += sel;
   },
 
-  pseudoClass(/* value */) {
-    throw new Error('Not implemented');
+  element(value) {
+    if (this.newSelector) {
+      this.checkOccurence('elem');
+      this.addToResult(value.toString());
+      return this;
+    }
+    const self = this.createNewSelector();
+    self.checkOccurence('elem');
+    self.addToResult(value.toString());
+    return self;
   },
 
-  pseudoElement(/* value */) {
-    throw new Error('Not implemented');
+  id(value) {
+    if (this.newSelector) {
+      this.checkOccurence('id');
+      this.addToResult(`#${value}`);
+      return this;
+    }
+    const self = this.createNewSelector();
+    self.checkOccurence('id');
+    self.addToResult(`#${value}`);
+    return self;
   },
 
-  combine(/* selector1, combinator, selector2 */) {
-    throw new Error('Not implemented');
+  class(value) {
+    if (this.newSelector) {
+      this.checkOccurence('class');
+      this.addToResult(`.${value}`);
+      return this;
+    }
+    const self = this.createNewSelector();
+    self.checkOccurence('class');
+    self.addToResult(`.${value}`);
+    return self;
+  },
+
+  attr(value) {
+    if (this.newSelector) {
+      this.checkOccurence('attr');
+      this.addToResult(`[${value}]`);
+      return this;
+    }
+    const self = this.createNewSelector();
+    self.checkOccurence('attr');
+    self.addToResult(`[${value}]`);
+    return self;
+  },
+
+  pseudoClass(value) {
+    if (this.newSelector) {
+      this.checkOccurence('ps-class');
+      this.addToResult(`:${value}`);
+      return this;
+    }
+    const self = this.createNewSelector();
+    self.checkOccurence('ps-class');
+    self.addToResult(`:${value}`);
+    return self;
+  },
+
+  pseudoElement(value) {
+    if (this.newSelector) {
+      this.checkOccurence('ps-elem');
+      this.addToResult(`::${value}`);
+      return this;
+    }
+    const self = this.createNewSelector();
+    self.checkOccurence('ps-elem');
+    self.addToResult(`::${value}`);
+    return self;
+  },
+
+  combine(selector1, combinator, selector2) {
+    const self = { ...this };
+    self.result = `${selector1.stringify()} ${combinator} ${selector2.stringify()}`;
+    return self;
+  },
+
+  stringify() {
+    const res = this.result;
+    this.result = '';
+    this.occurences = {};
+    return res;
   },
 };
 
