@@ -115,11 +115,10 @@ function chainPromises(array, action) {
           acc = act(acc, value);
         }
       } catch (e) {
-        console.log(e);
-        // throw e;
+        return e;
       }
     }
-    return new Promise((resolve) => resolve(acc));
+    return acc;
   };
   return result(array, action);
 }
