@@ -20,6 +20,7 @@ module.exports = {
     'prefer-template': 0,
     'no-param-reassign': 0,
     'no-else-return': 0,
-    'no-await-in-loop': 0
+    'no-await-in-loop': 0,
+    'no-unsafe-finally': 0,
   },
 };
