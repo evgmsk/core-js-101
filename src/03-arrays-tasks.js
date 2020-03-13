@@ -213,12 +213,12 @@ function getTail(arr, n) {
  */
 function toCsvText(arr) {
   return arr.reduce((acc, x, i) => {
-    acc += x.join(',');
+    acc[0] += x.join(',');
     if (i < arr.length - 1) {
-      acc += '\n';
+      acc[0] += '\n';
     }
     return acc;
-  }, '');
+  }, [''])[0];
   // throw new Error('Not implemented');
 }
 

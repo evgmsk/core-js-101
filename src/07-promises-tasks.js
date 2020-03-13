@@ -105,19 +105,20 @@ function getFastestPromise(array) {
 
 function chainPromises(array, action) {
   const result = async (arr, act) => {
-    let acc;
-    for (let i = 0; i < arr.length; i++) {
-      try {
-        const value = await arr[i];
-        if (!acc) {
-          acc = value;
-        } else {
-          acc = act(acc, value);
-        }
-      } catch (e) {
-        return e;
-      }
-    }
+    let acc = '';
+    // for (let i = 0; i < arr.length; i += 1) {
+    //   try {
+    //     const value = await arr[i];
+    //     if (!acc) {
+    //       acc = value;
+    //     } else {
+    //       acc = act(acc, value);
+    //     }
+    //   } catch (e) {
+    //     return e;
+    //   }
+    // }
+    acc = act(arr);
     return acc;
   };
   return result(array, action);

@@ -222,14 +222,14 @@ function getRectangleString(width, height) {
   const rightBottom = '┘';
   const leftSide = '│';
   const rightSide = '│';
-  let res = '';
-  for (let i = 0; i < height; i++) {
+  let res;
+  for (let i = 0; i < height; i += 1) {
     if (i === 0) {
-      res += leftTop + top.repeat(width - 2) + rightTop + '\n';
+      res = `${leftTop}${top.repeat(width - 2)}${rightTop}\n`;
     } else if (i < height - 1) {
-      res += leftSide + (' ').repeat(width - 2) + rightSide + '\n';
+      res = `${res}${leftSide}${(' ').repeat(width - 2)}${rightSide}\n`;
     } else {
-      res += leftBottom + bottom.repeat(width - 2) + rightBottom + '\n';
+      res = `${res}${leftBottom}${bottom.repeat(width - 2)}${rightBottom}\n`;
     }
   }
   return res;

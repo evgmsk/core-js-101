@@ -77,7 +77,7 @@ function getFactorial(n) {
 function getSumBetweenNumbers(n1, n2) {
   let res = 0;
   const [max, min] = n1 > n2 ? [n1, n2] : [n2, n1];
-  for (let i = min; i <= max; i++) {
+  for (let i = min; i <= max; i += 1) {
     res += i;
   }
   return res;
@@ -251,7 +251,7 @@ function getIntervalString(a, b, isStartIncluded, isEndIncluded) {
  * 'noon' => 'noon'
  */
 function reverseString(str) {
-  return str.split('').reduceRight((acc, s) => { acc += s; return acc; }, '');
+  return str.split('').reduceRight((acc, s) => { acc[0] += s; return acc; }, [''])[0];
   // throw new Error('Not implemented');
 }
 
@@ -299,13 +299,13 @@ function isCreditCardNumber(ccn) {
   const oddLength = ccnArr.length % 2;
   const sum = ccnArr.reduce((acc, d, i) => {
     if ((oddLength && !(i % 2)) || (!oddLength && (i % 2))) {
-      acc += +d;
+      acc[0] += +d;
     } else {
-      acc += d * 2 > 9 ? (d * 2 - 9) : d * 2;
+      acc[0] += d * 2 > 9 ? (d * 2 - 9) : d * 2;
     }
     return acc;
-  }, 0);
-  return !(sum % 10);
+  }, [0]);
+  return !(sum[0] % 10);
 }
 
 /**
@@ -325,11 +325,11 @@ function isCreditCardNumber(ccn) {
 function getDigitalRoot(num) {
   function recRootCount(n) {
     const digitArr = n.toString().split('');
-    const digitSum = digitArr.reduce((acc, d) => { acc += parseInt(d, 10); return acc; }, 0);
-    if (digitSum < 9) {
-      return digitSum;
+    const digitSum = digitArr.reduce((acc, d) => { acc[0] += parseInt(d, 10); return acc; }, [0]);
+    if (digitSum[0] < 9) {
+      return digitSum[0];
     }
-    return recRootCount(digitSum);
+    return recRootCount(digitSum[0]);
   }
   return recRootCount(num);
   // throw new Error('Not implemented');
@@ -366,7 +366,7 @@ function isBracketsBalanced(str) {
     '(': ')',
   };
   const toClose = [];
-  for (let i = 0; i < Str.length; i++) {
+  for (let i = 0; i < Str.length; i += 1) {
     const bracketToclose = bracketDic[Str[i]];
     if (bracketToclose) {
       toClose.push(bracketToclose);
@@ -423,7 +423,7 @@ function toNaryString(num, n) {
 function getCommonDirectoryPath(pathes) {
   let common = '';
   const shortest = pathes.sort((a, b) => a - b)[0];
-  for (let i = 0; i < shortest.length; i++) {
+  for (let i = 0; i < shortest.length; i += 1) {
     if (pathes.filter((x) => x[i] === shortest[i]).length === pathes.length) {
       common += shortest[i];
     } else {
@@ -458,13 +458,13 @@ function getCommonDirectoryPath(pathes) {
  */
 function getMatrixProduct(m1, m2) {
   const matrix = [];
-  for (let i = 0; i < m1.length; i++) {
+  for (let i = 0; i < m1.length; i += 1) {
     if (!matrix[i]) {
       matrix[i] = [];
     }
-    for (let j = 0; j < m1[0].length; j++) {
+    for (let j = 0; j < m1[0].length; j += 1) {
       matrix[i][j] = 0;
-      for (let k = 0; k < m2.length; k++) {
+      for (let k = 0; k < m2.length; k += 1) {
         matrix[i][j] += m1[i][k] * m2[k][j];
       }
     }
@@ -505,7 +505,7 @@ function getMatrixProduct(m1, m2) {
  *
  */
 function evaluateTicTacToePosition(position) {
-  for (let i = 0; i < 3; i++) {
+  for (let i = 0; i < 3; i += 1) {
     if ([position[0][i], position[1][i], position[2][i]].filter((x) => x === 'X').length === 3) {
       return 'X';
     }

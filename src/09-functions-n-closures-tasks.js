@@ -125,18 +125,17 @@ function retry(func, attempts) {
   let att = 0;
   return function repeat() {
     att += 1;
-    try {
-      func();
-    } catch (e) {
-      console.error(e);
-    } finally {
-      if (att < attempts) {
-        return repeat();
+    if (att < attempts) {
+      try {
+        func();
+      } catch (e) {
+        // console.error(e);
+      } finally {
+        repeat();
       }
-      return att;
     }
+    return att;
   };
-  // throw new Error('Not implemented');
 }
 
 
