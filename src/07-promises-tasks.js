@@ -104,24 +104,26 @@ function getFastestPromise(array) {
  */
 
 function chainPromises(array, action) {
-  const result = async (arr, act) => {
-    let acc = '';
-    // for (let i = 0; i < arr.length; i += 1) {
-    //   try {
-    //     const value = await arr[i];
-    //     if (!acc) {
-    //       acc = value;
-    //     } else {
-    //       acc = act(acc, value);
-    //     }
-    //   } catch (e) {
-    //     return e;
-    //   }
-    // }
-    acc = act(arr);
-    return acc;
+  let acc = '';
+  let i = 0;
+  const recurAwait = async () => {
+    if (i > array.length - 1) {
+      return acc;
+    }
+    try {
+      const value = await array[i];
+      if (!acc) {
+        acc = value;
+      } else {
+        acc = action(acc, value);
+      }
+    } catch (e) {
+      return e;
+    }
+    i += 1;
+    return recurAwait();
   };
-  return result(array, action);
+  return recurAwait();
 }
 
 module.exports = {
