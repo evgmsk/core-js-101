@@ -118,7 +118,7 @@ describe('09-functions-n-closures-tasks', () => {
     const fn = function testLogger(param, index) {
       assert.equal(
         log,
-        'testLogger(expected,test,1,0) starts\n',
+        'testLogger(["expected","test",1],0) starts\n',
         'logger function shoud log the start of specified function before calling',
       );
       isCalling = true;
@@ -137,8 +137,8 @@ describe('09-functions-n-closures-tasks', () => {
     assert.equal(actual, 'expected', 'logger function should return the original result from specified function');
     assert.equal(
       log,
-      'testLogger(expected,test,1,0) starts\n'
-      + 'testLogger(expected,test,1,0) ends\n',
+      'testLogger(["expected","test",1],0) starts\n'
+      + 'testLogger(["expected","test",1],0) ends\n',
       'logger function shoud log the end of specified function after calling',
     );
   });

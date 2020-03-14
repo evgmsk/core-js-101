@@ -164,10 +164,9 @@ function retry(func, attempts) {
  */
 function logger(func, logFunc) {
   return (...args) => {
-    // console.log(...args, Array.isArray(args));
-    logFunc(`${func.name}(${args}) starts`);
+    logFunc(`${func.name}(${JSON.stringify(args).replace(/^\[/, '').replace(/\]$/, '')}) starts`);
     const res = func(...args);
-    logFunc(`${func.name}(${args}) ends`);
+    logFunc(`${func.name}(${JSON.stringify(args).replace(/^\[/, '').replace(/\]$/, '')}) ends`);
     return res;
   };
   // throw new Error('Not implemented');

@@ -120,7 +120,7 @@ function angleBetweenClockHands(date) {
   const { PI, abs } = Math;
   const angDeg = (60 * date.getUTCHours() - 11 * date.getUTCMinutes()) / 2;
   const degRad = PI / 180;
-  const angRad = abs(angDeg * degRad) % (2 * PI);
+  const angRad = (angDeg * degRad) % (2 * PI);
   return angRad > PI ? abs(2 * PI - angRad) : angRad;
   // throw new Error('Not implemented');
 }
